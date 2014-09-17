@@ -1,1 +1,9 @@
 c:\users\kyle\documents\visual studio 2012\Projects\EquationFinder\EquationFinder\bin\Debug\EquationFinder.exe.config
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\obj\Debug\EquationFinder.csprojResolveAssemblyReference.cache
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\obj\Debug\EquationFinder.Finder.resources
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\obj\Debug\EquationFinder.Properties.Resources.resources
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\obj\Debug\EquationFinder.csproj.GenerateResource.Cache
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\bin\Debug\EquationFinder.exe
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\bin\Debug\EquationFinder.pdb
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\obj\Debug\EquationFinder.exe
+C:\Users\Kyle\Documents\Visual Studio 2012\Projects\EquationFinder\EquationFinder\obj\Debug\EquationFinder.pdb
