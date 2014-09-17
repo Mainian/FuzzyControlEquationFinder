@@ -47,6 +47,7 @@
     <Compile Include="EF_Equation.cs" />
     <Compile Include="EF_Operator.cs" />
     <Compile Include="EF_Variable.cs" />
+    <Compile Include="EquationMaker.cs" />
     <Compile Include="Finder.cs">
       <SubType>Form</SubType>
     </Compile>
