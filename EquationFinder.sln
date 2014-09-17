@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquationFinder", "EquationFinder\EquationFinder.csproj", "{CB8A7B75-8331-444D-848C-960FF8C0BDEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB8A7B75-8331-444D-848C-960FF8C0BDEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB8A7B75-8331-444D-848C-960FF8C0BDEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB8A7B75-8331-444D-848C-960FF8C0BDEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB8A7B75-8331-444D-848C-960FF8C0BDEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
