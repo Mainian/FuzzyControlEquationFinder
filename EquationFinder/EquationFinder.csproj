@@ -54,6 +54,7 @@
     <Compile Include="Finder.Designer.cs">
       <DependentUpon>Finder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mutatable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Finder.resx">

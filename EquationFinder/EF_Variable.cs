@@ -6,14 +6,22 @@ using System.Threading.Tasks;
 
 namespace EquationFinder
 {
-    public class EF_Variable
+    public class EF_Variable : Mutatable
     {
-        public char symbol { get; set; }
+        public EF_Variable(char symbol, dynamic value, dynamic coefficient, dynamic power)
+        {
+            this.Symbol = symbol;
+            this.Value = value;
+            this.CoEfficient = coefficient;
+            this.Power = power;
+        }
+
+        public char Symbol { get; set; }
         public dynamic Value { get; set; }
         public dynamic CoEfficient { get; set; }
         public dynamic Power { get; set; }
 
-        public dynamic ComputedValue 
+        public dynamic ComputedValue
         {
             get
             {
@@ -23,7 +31,25 @@ namespace EquationFinder
 
         public override string ToString()
         {
-            return (CoEfficient +"*"+ symbol + "^" + Power);
+            return (CoEfficient + "*" + Symbol + "^" + Power);
+        }
+
+        public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations = 1)
+        {
+            Random random = new Random();
+            double coeff = random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double pow = random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double valu = random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            while (mutations-- >= 0)
+            {
+                if (coeff > pow && coeff > valu) //change coefficient
+                    CoEfficient += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                else if (pow > coeff && pow > valu)
+                    Power += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                else //change power
+                    Value += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            }
+
         }
     }
 }

@@ -12,7 +12,7 @@ namespace EquationFinder
         Double
     };
 
-    public class EF_Equation
+    public class EF_Equation : Mutatable
     {
         public EF_Equation(EquationType eqType, List<EF_Variable> variables, List<EF_Operator> operands)
         {
@@ -52,29 +52,56 @@ namespace EquationFinder
             for (int i = 0; i < Variables.Count; i++)
             {
                 if (Operators.Count - 1 > i)
-                    output += Variables[i].ToString() + Operators[i].ToString();
+                    output += Variables[i].ComputedValue + Operators[i].ToString();
                 else
-                    output += Variables[i].ToString();
+                    output += Variables[i].ComputedValue;
             }
 
             return output;
         }
 
-        public void Mutate(int mutations, double max, double min)
+        private void mixParameters()
+        {
+            List<EF_Operator> operators = new List<EF_Operator>();
+            Random random = new Random();
+            int index = 0;
+            while (this.Operators.Count > 0)
+            {
+                index = random.Next(0, this.Operators.Count);
+                operators.Add(Operators[index]);
+                this.Operators.RemoveAt(index);
+            }
+            this.Operators = operators;
+
+            List<EF_Variable> variables = new List<EF_Variable>();
+
+            while (this.Variables.Count > 0)
+            {
+                index = random.Next(0, this.Variables.Count);
+                variables.Add(this.Variables[index]);
+                this.Variables.RemoveAt(index);
+            }
+            this.Variables = variables;
+        }
+
+        public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations)
         {
             Random random = new Random();
+            int muts = mutations;
             int index;
             do
             {
-                switch (random.Next(0, 2))
+                switch (random.Next(0, 3))
                 {
                     case 0:
                         index = random.Next(0, this.Operators.Count());
-                        //this.Operators[index].Mutate();
+                        this.Operators[index].Mutate(maxMutation, minMutation, muts);
                         break;
+                    case 1:
+
                     default:
                         index = random.Next(0, this.Variables.Count());
-                        //this.Variables[index].Mutate();
+                        this.Variables[index].Mutate(maxMutation, minMutation, muts);
                         break;
                 }
             } while (mutations-- > 0);
