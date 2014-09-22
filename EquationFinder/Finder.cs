@@ -24,7 +24,7 @@ namespace EquationFinder
 
             EF_Equation equation = EquationMaker.Instance.MakeEquation(characters, EquationType.Int, 3, -3);
 
-            Console.Out.WriteLine(equation.Value);
+            Console.Out.WriteLine(EquationCalculator.Instance.ComputeEquation(equation));
         }
     }
 }
