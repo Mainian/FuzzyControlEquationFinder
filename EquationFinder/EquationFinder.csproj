@@ -58,6 +58,7 @@
     <Compile Include="Mutatable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolutionFinder.cs" />
     <EmbeddedResource Include="Finder.resx">
       <DependentUpon>Finder.cs</DependentUpon>
     </EmbeddedResource>
