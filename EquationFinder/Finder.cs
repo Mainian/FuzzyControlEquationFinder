@@ -12,6 +12,8 @@ namespace EquationFinder
 {
     public partial class Finder : Form
     {
+        private SolutionFinder solutionFinder;
+
         public Finder()
         {
             InitializeComponent();
@@ -20,11 +22,18 @@ namespace EquationFinder
 
         private void test()
         {
-            List<char> characters = new List<Char> (new char[] {'x', 'y', 'z'});
+            //List<char> characters = new List<Char> (new char[] {'x', 'y', 'z'});
 
-            EF_Equation equation = EquationMaker.Instance.MakeEquation(characters, EquationType.Int, 3, -3);
+            //EF_Equation equation = EquationMaker.Instance.MakeEquation(characters, EquationType.Int, 3, -3);
 
-            Console.Out.WriteLine(EquationCalculator.Instance.ComputeEquation(equation));
+            //Console.Out.WriteLine(EquationCalculator.Instance.ComputeEquation(equation));
+
+            solutionFinder.AnswerFound += new AnswerFoundEventHandler<EF_Equation>(AnswerFound);
+        }
+
+        private void AnswerFound(object sender, EF_Equation equation, EventArgs e)
+        {
+
         }
     }
 }

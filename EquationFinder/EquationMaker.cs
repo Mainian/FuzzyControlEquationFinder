@@ -28,15 +28,15 @@ namespace EquationFinder
             }
         }
 
-        public EF_Equation MakeEquation(List<Char> variables, EquationType type, dynamic maxValue, dynamic minValue)
+        public EF_Equation MakeEquation(Dictionary<char,dynamic> inputs, EquationType type, dynamic maxValue, dynamic minValue)
         {
             List<EF_Variable> vars = new List<EF_Variable>();
             List<EF_Operator> operands = new List<EF_Operator>();
             int i = 0;
-            foreach(Char c in variables)
+            foreach(KeyValuePair<char, dynamic> input in inputs)
             {
-                vars.Add(variableMaker(c, type, maxValue, minValue));
-                if(i < variables.Count)
+                vars.Add(variableMaker(input.Key, input.Value, type, maxValue, minValue));
+                if(i < inputs.Count)
                     operands.Add(operatorMaker());
 
                 i++;
@@ -45,12 +45,11 @@ namespace EquationFinder
             return new EF_Equation(type, vars, operands);
         }
 
-        private EF_Variable variableMaker(char c, EquationType type, dynamic maxValue, dynamic minValue)
+        private EF_Variable variableMaker(char c, dynamic value, EquationType type, dynamic maxValue, dynamic minValue)
         {
-            dynamic val = valueMaker(type, maxValue, minValue);
             dynamic coeff = valueMaker(type, maxValue, minValue);
             dynamic power = valueMaker(type, maxValue, minValue);
-            EF_Variable vari = new EF_Variable(c, val, coeff, power);
+            EF_Variable vari = new EF_Variable(c, value, coeff, power);
 
             return vari;
         }

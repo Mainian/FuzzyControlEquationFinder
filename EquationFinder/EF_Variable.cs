@@ -39,15 +39,15 @@ namespace EquationFinder
             Random random = new Random();
             double coeff = random.NextDouble() * (maxMutation - minMutation) + minMutation;
             double pow = random.NextDouble() * (maxMutation - minMutation) + minMutation;
-            double valu = random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            //double valu = random.NextDouble() * (maxMutation - minMutation) + minMutation;
             while (mutations-- >= 0)
             {
-                if (coeff > pow && coeff > valu) //change coefficient
+                if (coeff > pow) //change coefficient
                     CoEfficient += random.NextDouble() * (maxMutation - minMutation) + minMutation;
-                else if (pow > coeff && pow > valu)
+                else
                     Power += random.NextDouble() * (maxMutation - minMutation) + minMutation;
-                else //change power
-                    Value += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                //else //change power
+                //    Value += random.NextDouble() * (maxMutation - minMutation) + minMutation;
             }
 
         }
