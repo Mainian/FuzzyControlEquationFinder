@@ -14,6 +14,7 @@ namespace EquationFinder
     {
         private SolutionFinder solutionFinder;
         private Dictionary<char, dynamic> inputs = new Dictionary<char, dynamic>();
+        private bool newSolution = true;
         private bool lockFunctions = false;
 
         public Finder()
@@ -47,9 +48,11 @@ namespace EquationFinder
                 comboBox_Variables.DisplayMember = "Key";
                 comboBox_Variables.ValueMember = "Key";
             }
-
-            if (comboBox_Variables.DataSource != null)
-                this.comboBox_Variables.DataSource = null;
+            else
+            {
+                if (comboBox_Variables.DataSource != null)
+                    this.comboBox_Variables.DataSource = null;
+            }
         }
 
         private void enableButtons()
@@ -64,9 +67,9 @@ namespace EquationFinder
             else
                 Remove_btn.Enabled = false;
 
-            setupVariableBindings();
-
             enableSolutionButtons();
+
+            lockGAFunctions();
         }
 
         private void setupGAProperties()
@@ -112,9 +115,50 @@ namespace EquationFinder
             }
         }
 
+        private void lockGAFunctions()
+        {
+            if (lockFunctions)
+            {
+                comboBox_AcceptableCost.Enabled = false;
+                comboBox_MaxValue.Enabled = false;
+                comboBox_PopulationSize.Enabled = false;
+                comboBox_MinValue.Enabled = false;
+                comboBox_MutationRate.Enabled = false;
+
+                Add_btn.Enabled = false;
+                Remove_btn.Enabled = false;
+                textBox_EquationValue.Enabled = false;
+                textBox_Value.Enabled = false;
+                textBox_Variable.Enabled = false;
+            }
+            else
+            {
+                comboBox_AcceptableCost.Enabled = true;
+                comboBox_MaxValue.Enabled = true;
+                comboBox_PopulationSize.Enabled = true;
+                comboBox_MinValue.Enabled = true;
+                comboBox_MutationRate.Enabled = true;
+
+                Add_btn.Enabled = true;
+                Remove_btn.Enabled = true;
+                textBox_EquationValue.Enabled = true;
+                textBox_Value.Enabled = true;
+                textBox_Variable.Enabled = true;
+            }
+        }
+
         private void AnswerFound(object sender, EF_Equation equation, EventArgs e)
         {
+            lockFunctions = false;
 
+            button_Step.Enabled = true;
+            button_StepBy.Enabled = true;
+            button_Stop.Enabled = true;
+            enableButtons();
+
+            displayPopulationSettings();
+            textBox_Solution.Text = equation.PrettyName;
+            newSolution = true;
         }
 
         #region Variables
@@ -191,17 +235,20 @@ namespace EquationFinder
                 this.textBox_EquationValue.Text = sb.ToString();
                 this.textBox_EquationValue.SelectionStart = this.textBox_EquationValue.Text.Length;
             }
+
+            enableButtons();
         }
 
         private void Add_btn_Click(object sender, EventArgs e)
         {
             if (this.textBox_Variable.Text.Length > 0 && this.textBox_Value.Text.Length > 0)
             {
-                inputs.Add(this.textBox_Variable.Text[0], this.textBox_Value.Text);
+                inputs.Add(this.textBox_Variable.Text[0], double.Parse(this.textBox_Value.Text));
                 this.textBox_Variable.Text = "";
                 this.textBox_Value.Text = "";
             }
             enableButtons();
+            setupVariableBindings();
         }
 
         private void Remove_btn_Click(object sender, EventArgs e)
@@ -211,6 +258,7 @@ namespace EquationFinder
                 inputs.Remove(((KeyValuePair<char, dynamic>)comboBox_Variables.SelectedItem).Key);
             }
             enableButtons();
+            setupVariableBindings();
         }
         #endregion
 
@@ -241,12 +289,22 @@ namespace EquationFinder
         {
             lockFunctions = true;
             enableButtons();
+
+            setupSolutionFinder();
+            solutionFinder.AnswerFound += new AnswerFoundEventHandler<EF_Equation>(AnswerFound);
+            solutionFinder.PerformStep();
+            displayPopulationSettings();
         }
 
         private void button_StepBy_Click(object sender, EventArgs e)
         {
             lockFunctions = true;
             enableButtons();
+
+            setupSolutionFinder();
+            solutionFinder.AnswerFound += new AnswerFoundEventHandler<EF_Equation>(AnswerFound);
+            solutionFinder.PerformSteps(int.Parse(comboBox_Steps.SelectedItem.ToString()));
+            displayPopulationSettings();
         }
 
         private void comboBox_Steps_SelectedIndexChanged(object sender, EventArgs e)
@@ -260,6 +318,26 @@ namespace EquationFinder
             enableButtons();
 
             button_Stop.Enabled = false;
+
+            setupSolutionFinder();
+            solutionFinder.AnswerFound += new AnswerFoundEventHandler<EF_Equation>(AnswerFound);
+            button_Step.Enabled = false;
+            button_StepBy.Enabled = false;
+            button_Stop.Enabled = false;
+
+            solutionFinder.FindSolution();
+        }
+
+        private void setupSolutionFinder()
+        {
+            if (newSolution)
+            {
+                solutionFinder = new SolutionFinder(inputs, double.Parse(textBox_EquationValue.Text.ToString()),
+                    double.Parse(comboBox_AcceptableCost.SelectedItem.ToString()), double.Parse(comboBox_MutationRate.SelectedItem.ToString()), 
+                    int.Parse(comboBox_PopulationSize.SelectedItem.ToString()), EquationType.Double, 
+                    double.Parse(comboBox_MaxValue.SelectedItem.ToString()), double.Parse(comboBox_MinValue.SelectedItem.ToString()));
+                newSolution = false;
+            }
         }
 
         private void button_Stop_Click(object sender, EventArgs e)
@@ -267,7 +345,15 @@ namespace EquationFinder
             lockFunctions = false;
             enableButtons();
 
-            solutionFinder = null;
+            newSolution = true;
+        }
+
+        private void displayPopulationSettings()
+        {
+            label_PopCounter.Text = solutionFinder.PopulationCount.ToString();
+
+            listBox_Population.DataSource = solutionFinder.Equations;
+            listBox_Population.DisplayMember = "PrettyName";
         }
     }
 }

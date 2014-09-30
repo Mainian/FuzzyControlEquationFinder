@@ -24,6 +24,24 @@ namespace EquationFinder
         public List<EF_Variable> Variables { get; set; }
         public List<EF_Operator> Operators { get; set; }
         public EquationType EquationType { get; set; }
+        private Random random = new Random();
+
+        public string PrettyName
+        {
+            get
+            {
+                string output = "";
+                for (int i = 0; i < Variables.Count; i++)
+                {
+                    if (Operators.Count - 1 > i)
+                        output += Variables[i].ToString() + Operators[i].ToString();
+                    else
+                        output += Variables[i].ToString();
+                }
+
+                return output;
+            }
+        }
 
         public dynamic Value
         {
@@ -63,7 +81,6 @@ namespace EquationFinder
         private void mixParameters()
         {
             List<EF_Operator> operators = new List<EF_Operator>();
-            Random random = new Random();
             int index = 0;
             while (this.Operators.Count > 0)
             {
@@ -86,7 +103,6 @@ namespace EquationFinder
 
         public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations)
         {
-            Random random = new Random();
             int muts = mutations;
             int index;
             do

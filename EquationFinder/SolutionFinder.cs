@@ -22,6 +22,7 @@ namespace EquationFinder
         private EquationType type;
         private dynamic maxValue;        
         private dynamic minValue;
+        private Random random = new Random();
 
         #region Properties
         public List<EF_Equation> Equations
@@ -93,17 +94,25 @@ namespace EquationFinder
                 return minValue;
             }
         }
+
+        public Int64 PopulationCount
+        {
+            get;
+            private set;
+        }
         #endregion
 
         public SolutionFinder(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, int populationSize, EquationType type, dynamic maxValue, dynamic minValue)
         {
             fillOut(inputs, output, acceptableCost, mutationRate, populationSize, type, maxValue, minValue);
+            initializePopulation();
         }
 
         public SolutionFinder(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, int populationSize, EquationType type, dynamic maxValue, dynamic minValue, EF_Equation seed)
         {
             fillOut(inputs, output, acceptableCost, mutationRate, populationSize, type, maxValue, minValue);
             this.seed = seed;
+            initializePopulationWithSeed(this.seed);
         }
 
         private void fillOut(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, int populationSize, EquationType type, dynamic maxValue, dynamic minValue)
@@ -116,6 +125,8 @@ namespace EquationFinder
             this.type = type;
             this.maxValue = maxValue;
             this.minValue = minValue;
+
+            this.Equations = new List<EF_Equation>();
         }
 
         private void initializePopulationWithSeed(EF_Equation seed)
@@ -127,8 +138,14 @@ namespace EquationFinder
         {
             for (int i = 0; i < populationSize; i++)
             {
-                Equations.Add(EquationMaker.Instance.MakeEquation(inputs, type, maxValue, minValue));
+                EF_Equation equation = EquationMaker.Instance.MakeEquation(inputs, type, maxValue, minValue);
+
+                Equations.Add(equation);
+
+                Console.Out.WriteLine(equation.PrettyName);
             }
+
+            this.PopulationCount = 1;
         }
 
         private void performStep()
@@ -140,29 +157,35 @@ namespace EquationFinder
             if (foundAnswer(Equations[0]))
             {
                 //answer found
+                OnAnswerFound(Equations[0], null);
                 return;
             }
             else
             {
-                for (int i = Equations.Count / 2 - 1, parents = 0; i < Equations.Count; i+=2, parents += 2)
+                for (int i = Equations.Count / 2, parents = 0; i < Equations.Count; i+=2, parents += 2)
                 {
+                    Console.Out.WriteLine("i = " + i + " parents = " + parents);
+
                     Tuple<EF_Equation, EF_Equation> newEquations = EquationMaker.Instance.MakeChildren(Equations[parents], Equations[parents + 1]);
                     Equations[i] = newEquations.Item1;
                     Equations[i + 1] = newEquations.Item2;
                 }
 
                 Equations.Sort(compareEquations);
+                
+                //increment population count
+                PopulationCount++;
+
                 if (foundAnswer(Equations[0]))
                 {
                     //answer found
+                    OnAnswerFound(Equations[0], null);
                     return;
                 }
-                int j = mutationRate;
-                Random Random = new Random();
                 do
                 {
-                    int index = Random.Next(1, Equations.Count);
-                    dynamic maxMutationRate = Random.NextDouble() * mutationRate;
+                    int index = random.Next(1, Equations.Count);
+                    dynamic maxMutationRate = random.NextDouble() * mutationRate;
                     dynamic minMutationRate = maxMutationRate * 1;
 
                     EF_Equation mutateMe = Equations[index];
@@ -175,6 +198,7 @@ namespace EquationFinder
                 if (foundAnswer(Equations[0]))
                 {
                     //answer found
+                    OnAnswerFound(Equations[0], null);
                     return;
                 }
             }
@@ -191,6 +215,14 @@ namespace EquationFinder
             {
                 performStep();
                 steps--;
+            }
+        }
+
+        public void FindSolution()
+        {
+            while (!(foundAnswer(Equations[0])))
+            {
+                performStep();
             }
         }
 

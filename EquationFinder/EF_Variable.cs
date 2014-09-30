@@ -20,6 +20,7 @@ namespace EquationFinder
         public dynamic Value { get; set; }
         public dynamic CoEfficient { get; set; }
         public dynamic Power { get; set; }
+        private Random random = new Random();
 
         public dynamic ComputedValue
         {
@@ -36,7 +37,6 @@ namespace EquationFinder
 
         public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations = 1)
         {
-            Random random = new Random();
             double coeff = random.NextDouble() * (maxMutation - minMutation) + minMutation;
             double pow = random.NextDouble() * (maxMutation - minMutation) + minMutation;
             //double valu = random.NextDouble() * (maxMutation - minMutation) + minMutation;
