@@ -24,7 +24,6 @@ namespace EquationFinder
         public List<EF_Variable> Variables { get; set; }
         public List<EF_Operator> Operators { get; set; }
         public EquationType EquationType { get; set; }
-        private Random random = new Random();
 
         public string PrettyName
         {
@@ -84,7 +83,7 @@ namespace EquationFinder
             int index = 0;
             while (this.Operators.Count > 0)
             {
-                index = random.Next(0, this.Operators.Count);
+                index = RandomGenerator.Instance.Random.Next(0, this.Operators.Count);
                 operators.Add(Operators[index]);
                 this.Operators.RemoveAt(index);
             }
@@ -94,7 +93,7 @@ namespace EquationFinder
 
             while (this.Variables.Count > 0)
             {
-                index = random.Next(0, this.Variables.Count);
+                index = RandomGenerator.Instance.Random.Next(0, this.Variables.Count);
                 variables.Add(this.Variables[index]);
                 this.Variables.RemoveAt(index);
             }
@@ -107,16 +106,16 @@ namespace EquationFinder
             int index;
             do
             {
-                switch (random.Next(0, 3))
+                switch (RandomGenerator.Instance.Random.Next(0, 3))
                 {
                     case 0:
-                        index = random.Next(0, this.Operators.Count());
+                        index = RandomGenerator.Instance.Random.Next(0, this.Operators.Count());
                         this.Operators[index].Mutate(maxMutation, minMutation, muts);
                         break;
                     case 1:
 
                     default:
-                        index = random.Next(0, this.Variables.Count());
+                        index = RandomGenerator.Instance.Random.Next(0, this.Variables.Count());
                         this.Variables[index].Mutate(maxMutation, minMutation, muts);
                         break;
                 }

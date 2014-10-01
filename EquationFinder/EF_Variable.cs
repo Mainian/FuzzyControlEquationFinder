@@ -20,7 +20,6 @@ namespace EquationFinder
         public dynamic Value { get; set; }
         public dynamic CoEfficient { get; set; }
         public dynamic Power { get; set; }
-        private Random random = new Random();
 
         public dynamic ComputedValue
         {
@@ -37,17 +36,17 @@ namespace EquationFinder
 
         public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations = 1)
         {
-            double coeff = random.NextDouble() * (maxMutation - minMutation) + minMutation;
-            double pow = random.NextDouble() * (maxMutation - minMutation) + minMutation;
-            //double valu = random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double coeff = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double pow = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            //double valu = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
             while (mutations-- >= 0)
             {
                 if (coeff > pow) //change coefficient
-                    CoEfficient += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                    CoEfficient += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
                 else
-                    Power += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                    Power += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
                 //else //change power
-                //    Value += random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                //    Value += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
             }
 
         }

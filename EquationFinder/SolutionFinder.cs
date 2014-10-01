@@ -22,7 +22,6 @@ namespace EquationFinder
         private EquationType type;
         private dynamic maxValue;        
         private dynamic minValue;
-        private Random random = new Random();
 
         #region Properties
         public List<EF_Equation> Equations
@@ -164,7 +163,7 @@ namespace EquationFinder
             {
                 for (int i = Equations.Count / 2, parents = 0; i < Equations.Count; i+=2, parents += 2)
                 {
-                    Console.Out.WriteLine("i = " + i + " parents = " + parents);
+                    //Console.Out.WriteLine("i = " + i + " parents = " + parents);
 
                     Tuple<EF_Equation, EF_Equation> newEquations = EquationMaker.Instance.MakeChildren(Equations[parents], Equations[parents + 1]);
                     Equations[i] = newEquations.Item1;
@@ -172,7 +171,8 @@ namespace EquationFinder
                 }
 
                 Equations.Sort(compareEquations);
-                
+
+
                 //increment population count
                 PopulationCount++;
 
@@ -184,9 +184,9 @@ namespace EquationFinder
                 }
                 do
                 {
-                    int index = random.Next(1, Equations.Count);
-                    dynamic maxMutationRate = random.NextDouble() * mutationRate;
-                    dynamic minMutationRate = maxMutationRate * 1;
+                    int index = RandomGenerator.Instance.Random.Next(1, Equations.Count);
+                    dynamic maxMutationRate = Math.Abs(RandomGenerator.Instance.Random.NextDouble() * mutationRate);
+                    dynamic minMutationRate = maxMutationRate * -1;
 
                     EF_Equation mutateMe = Equations[index];
                     EquationMaker.Instance.MutateEquation(ref mutateMe, maxMutationRate, minMutationRate);
@@ -195,12 +195,17 @@ namespace EquationFinder
                 } while (mutationRate-- > 0);
 
                 Equations.Sort(compareEquations);
+                for (int i = 0; i < Equations.Count; i++)
+                    Console.Out.WriteLine("Cost = " + cost(Equations[i]) + " Value = " + EquationCalculator.Instance.ComputeEquation(Equations[i]));
                 if (foundAnswer(Equations[0]))
                 {
                     //answer found
                     OnAnswerFound(Equations[0], null);
                     return;
                 }
+                
+                Console.Out.WriteLine(" Best Computed Value = " + EquationCalculator.Instance.ComputeEquation(Equations[0]));
+                Console.Out.WriteLine("Best cost = " + cost(Equations[0]));
             }
         }
 
@@ -228,7 +233,7 @@ namespace EquationFinder
 
         private bool foundAnswer(EF_Equation equation)
         {
-            if (cost(Equations[0]) <= acceptableCost)
+            if (Math.Abs(Answer - EquationCalculator.Instance.ComputeEquation(equation)) <= acceptableCost)
                 return true;
 
             return false;
@@ -266,7 +271,18 @@ namespace EquationFinder
 
         private dynamic cost(EF_Equation equation)
         {
-            return Answer - EquationCalculator.Instance.ComputeEquation(equation);
+            dynamic val = EquationCalculator.Instance.ComputeEquation(equation);
+            dynamic cost = 0;
+
+            if (Math.Abs(val) > Math.Abs(Answer))
+                cost = (1 - val / Answer);
+            else
+                cost = (1 - Answer / val);
+
+            if (Math.Abs(val) < 1.0)
+                return Math.Abs(cost / val);
+            else
+                return Math.Abs(cost * val);
         }
 
         private void OnAnswerFound(EF_Equation equation, EventArgs e)

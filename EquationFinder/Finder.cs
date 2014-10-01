@@ -157,6 +157,8 @@ namespace EquationFinder
             enableButtons();
 
             displayPopulationSettings();
+            Console.Out.WriteLine("Value = " + EquationCalculator.Instance.ComputeEquation(equation));
+
             textBox_Solution.Text = equation.PrettyName;
             newSolution = true;
         }
@@ -326,6 +328,7 @@ namespace EquationFinder
             button_Stop.Enabled = false;
 
             solutionFinder.FindSolution();
+            displayPopulationSettings();
         }
 
         private void setupSolutionFinder()
@@ -351,6 +354,8 @@ namespace EquationFinder
         private void displayPopulationSettings()
         {
             label_PopCounter.Text = solutionFinder.PopulationCount.ToString();
+
+            listBox_Population.DataSource = null;
 
             listBox_Population.DataSource = solutionFinder.Equations;
             listBox_Population.DisplayMember = "PrettyName";

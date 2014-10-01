@@ -22,7 +22,6 @@ namespace EquationFinder
         }
 
         public EF_Operand Operator { get; set; }
-        private Random random = new Random();
 
         public override string ToString()
         {
@@ -38,9 +37,9 @@ namespace EquationFinder
 
         public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations = 1)
         {
-            double val1 = random.NextDouble() * (maxMutation - minMutation) + minMutation;
-            double val2 = random.NextDouble() * (maxMutation - minMutation) + minMutation;
-            double val3 = random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double val1 = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double val2 = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
+            double val3 = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
             while (mutations-- >= 0)
             {
                 if (val1 > val2) // operand = + or -
