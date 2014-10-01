@@ -26,7 +26,7 @@ namespace EquationFinder
         {
             get
             {
-                return CoEfficient * Math.Pow(Value, Power);
+                return CoEfficient * (Math.Pow(Value, Power));
             }
         }
 

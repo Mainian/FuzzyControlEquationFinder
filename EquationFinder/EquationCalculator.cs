@@ -30,23 +30,71 @@ namespace EquationFinder
 
         public dynamic ComputeEquation(EF_Equation equation)
         {
+            if (equation.Variables.Count == 1)
+                return equation.Variables[0].ComputedValue;
+
             dynamic val = 0;
-            for (int i = 0, x = 0; i < equation.Variables.Count - 1; i=i+2,x++)
+            List<dynamic> variableList = new List<dynamic>();
+            List<EF_Operator> operatorList = new List<EF_Operator>();
+            for (int i = 0; i < equation.Variables.Count; i++)
+                variableList.Add(equation.Variables[0].ComputedValue);
+            for (int i = 0, x = 0; i < equation.Operators.Count; i++,x=x+2)
             {
-                val += computeVariables(equation.Variables[i], equation.Variables[i+1], equation.Operators[x]);
+                switch (equation.Operators[i].Operator)
+                {
+                    case EF_Operand.Add: operatorList.Add(equation.Operators[i]); break;
+                    case EF_Operand.Subtract: operatorList.Add(equation.Operators[i]); break;
+                    case EF_Operand.Multiply:
+                        dynamic val_temp = 0;
+                        val_temp = computeVariables(variableList[x], variableList[x], equation.Operators[i]);
+                        variableList[x] = val_temp;
+                        variableList.RemoveAt(x + 1);
+                        x--;
+                        break;
+                    case EF_Operand.Divide:
+                        dynamic val_temp2 = 0;
+                        val_temp2 = computeVariables(variableList[x], variableList[x], equation.Operators[i]);
+                        variableList[x] = val_temp2;
+                        variableList.RemoveAt(x + 1);
+                        x--;
+                        break;
+                    default: break;
+                }
             }
 
-            return val;
+            for (int i = 0, x = 0; i < equation.Operators.Count; i++, x = x + 2)
+            {
+                switch (equation.Operators[i].Operator)
+                {
+                    case EF_Operand.Add:
+                        dynamic val_temp = 0;
+                        val_temp = computeVariables(variableList[x], variableList[x], equation.Operators[i]);
+                        variableList[x] = val_temp;
+                        variableList.RemoveAt(x + 1);
+                        x--;
+                        break;
+                    case EF_Operand.Subtract:
+                        dynamic val_temp2 = 0;
+                        val_temp2 = computeVariables(variableList[x], variableList[x], equation.Operators[i]);
+                        variableList[x] = val_temp2;
+                        variableList.RemoveAt(x + 1);
+                        x--;
+                        break;
+                    default: break;
+                }
+            }
+
+            return variableList[0];
         }
 
-        private dynamic computeVariables(EF_Variable variable1, EF_Variable variable2, EF_Operator op)
+        private dynamic computeVariables(dynamic computedValue1, dynamic computedValue2, EF_Operator op)
         {
             switch (op.Operator)
             {
-                case EF_Operand.Add: return variable1.ComputedValue + variable2.ComputedValue;
-                case EF_Operand.Subtract: return variable1.ComputedValue - variable2.ComputedValue;
-                case EF_Operand.Multiply: return variable1.ComputedValue * variable2.ComputedValue;
-                case EF_Operand.Divide: return variable1.ComputedValue / variable2.ComputedValue;
+                case EF_Operand.Add: return computedValue1 + computedValue2;
+                case EF_Operand.Subtract: return computedValue1 - computedValue2;
+                case EF_Operand.Multiply: return computedValue1 * computedValue2;
+                case EF_Operand.Divide: return computedValue1 / computedValue2;
                 default: return 0;
             }
         }

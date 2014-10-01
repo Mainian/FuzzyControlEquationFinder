@@ -37,7 +37,7 @@ namespace EquationFinder
             foreach(KeyValuePair<char, dynamic> input in inputs)
             {
                 vars.Add(variableMaker(input.Key, input.Value, type, maxValue, minValue));
-                if(i < inputs.Count)
+                if(i < inputs.Count-1)
                     operands.Add(operatorMaker());
 
                 i++;
