@@ -157,6 +157,7 @@ namespace EquationFinder
             enableButtons();
 
             displayPopulationSettings();
+            label_PopulationCount.Text = "Answer found on " + solutionFinder.PopulationCount;
             Console.Out.WriteLine("Value = " + EquationCalculator.Instance.ComputeEquation(equation));
 
             textBox_Solution.Text = equation.PrettyName;
@@ -340,6 +341,8 @@ namespace EquationFinder
                     int.Parse(comboBox_PopulationSize.SelectedItem.ToString()), EquationType.Double, 
                     double.Parse(comboBox_MaxValue.SelectedItem.ToString()), double.Parse(comboBox_MinValue.SelectedItem.ToString()));
                 newSolution = false;
+
+                textBox_Solution.Text = "";
             }
         }
 
