@@ -49,7 +49,13 @@ namespace EquationFinder
         {
             dynamic coeff = valueMaker(type, maxValue, minValue);
             dynamic power = valueMaker(type, maxValue, minValue);
-            EF_Variable vari = new EF_Variable(c, value, coeff, power);
+            VariableType varType;
+            if(type == EquationType.Int)
+                 varType = VariableType.Int;
+            else
+                 varType = VariableType.Double;
+
+            EF_Variable vari = new EF_Variable(c, value, coeff, power, varType);
 
             return vari;
         }
@@ -58,7 +64,7 @@ namespace EquationFinder
         {
             if (type == EquationType.Int)
             {
-                int val = RandomGenerator.Instance.Random.Next(minValue, maxValue + 1);
+                int val = RandomGenerator.Instance.Random.Next((int)minValue, (int)maxValue + 1);
                 return val;
             }
             else
@@ -81,6 +87,12 @@ namespace EquationFinder
 
         public Tuple<EF_Equation, EF_Equation> MakeChildren(EF_Equation parent1, EF_Equation parent2)
         {
+            VariableType varType;
+            if (parent1.EquationType == EquationType.Int)
+                varType = VariableType.Int;
+            else
+                varType = VariableType.Double;
+
             EquationType parent1Copy_eq = new EquationType();
             EquationType parent2Copy_eq = new EquationType();
 
@@ -108,7 +120,7 @@ namespace EquationFinder
                 //Console.Out.WriteLine(variable.Value);
 
                 dynamic power = variable.Power;
-                EF_Variable newVariable = new EF_Variable(symbol, value, coeff, power);
+                EF_Variable newVariable = new EF_Variable(symbol, value, coeff, power, varType);
 
                 parent1Copy_variables.Add(newVariable);
             }
@@ -119,7 +131,7 @@ namespace EquationFinder
                 dynamic value = variable.Value;
                 dynamic coeff = variable.CoEfficient;
                 dynamic power = variable.Power;
-                EF_Variable newVariable = new EF_Variable(symbol, value, coeff, power);
+                EF_Variable newVariable = new EF_Variable(symbol, value, coeff, power, varType);
 
                 parent2Copy_variables.Add(newVariable);
             }

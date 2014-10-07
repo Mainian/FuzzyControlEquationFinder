@@ -22,6 +22,8 @@ namespace EquationFinder
             InitializeComponent();
             test();
 
+            addEquationTypes();
+
             //Enable Variable Buttons
             enableButtons();
 
@@ -38,6 +40,11 @@ namespace EquationFinder
             //Console.Out.WriteLine(EquationCalculator.Instance.ComputeEquation(equation));
 
            // solutionFinder.AnswerFound += new AnswerFoundEventHandler<EF_Equation>(AnswerFound);
+        }
+
+        private void addEquationTypes()
+        {
+            comboBox_EquationTypes.DataSource = Enum.GetValues(typeof(EquationType));
         }
 
         private void setupVariableBindings()
@@ -122,6 +129,7 @@ namespace EquationFinder
                 comboBox_AcceptableCost.Enabled = false;
                 comboBox_MaxValue.Enabled = false;
                 comboBox_PopulationSize.Enabled = false;
+                comboBox_EquationTypes.Enabled = false;
                 comboBox_MinValue.Enabled = false;
                 comboBox_MutationRate.Enabled = false;
 
@@ -138,6 +146,7 @@ namespace EquationFinder
                 comboBox_PopulationSize.Enabled = true;
                 comboBox_MinValue.Enabled = true;
                 comboBox_MutationRate.Enabled = true;
+                comboBox_EquationTypes.Enabled = true;
 
                 Add_btn.Enabled = true;
                 Remove_btn.Enabled = true;
@@ -337,8 +346,8 @@ namespace EquationFinder
             if (newSolution)
             {
                 solutionFinder = new SolutionFinder(inputs, double.Parse(textBox_EquationValue.Text.ToString()),
-                    double.Parse(comboBox_AcceptableCost.SelectedItem.ToString()), double.Parse(comboBox_MutationRate.SelectedItem.ToString()), 
-                    int.Parse(comboBox_PopulationSize.SelectedItem.ToString()), EquationType.Double, 
+                    double.Parse(comboBox_AcceptableCost.SelectedItem.ToString()), double.Parse(comboBox_MutationRate.SelectedItem.ToString()),
+                    int.Parse(comboBox_PopulationSize.SelectedItem.ToString()), (EquationType)comboBox_EquationTypes.SelectedValue, 
                     double.Parse(comboBox_MaxValue.SelectedItem.ToString()), double.Parse(comboBox_MinValue.SelectedItem.ToString()));
                 newSolution = false;
 
@@ -362,6 +371,11 @@ namespace EquationFinder
 
             listBox_Population.DataSource = solutionFinder.Equations;
             listBox_Population.DisplayMember = "PrettyName";
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

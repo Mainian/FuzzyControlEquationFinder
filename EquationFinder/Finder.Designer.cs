@@ -61,6 +61,8 @@
             this.label_MaxValue = new System.Windows.Forms.Label();
             this.comboBox_MutationRate = new System.Windows.Forms.ComboBox();
             this.label_MutationRate = new System.Windows.Forms.Label();
+            this.label_EquationType = new System.Windows.Forms.Label();
+            this.comboBox_EquationTypes = new System.Windows.Forms.ComboBox();
             this.groupBox_Variables.SuspendLayout();
             this.groupBox_Answer.SuspendLayout();
             this.groupBox_Population.SuspendLayout();
@@ -79,6 +81,8 @@
             // 
             // groupBox_Variables
             // 
+            this.groupBox_Variables.Controls.Add(this.comboBox_EquationTypes);
+            this.groupBox_Variables.Controls.Add(this.label_EquationType);
             this.groupBox_Variables.Controls.Add(this.textBox_EquationValue);
             this.groupBox_Variables.Controls.Add(this.label_EquationEquals);
             this.groupBox_Variables.Controls.Add(this.label_Value);
@@ -92,7 +96,7 @@
             this.groupBox_Variables.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox_Variables.Name = "groupBox_Variables";
             this.groupBox_Variables.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox_Variables.Size = new System.Drawing.Size(814, 250);
+            this.groupBox_Variables.Size = new System.Drawing.Size(814, 297);
             this.groupBox_Variables.TabIndex = 2;
             this.groupBox_Variables.TabStop = false;
             this.groupBox_Variables.Text = "Variables";
@@ -196,7 +200,7 @@
             this.groupBox_Answer.Controls.Add(this.button_Step);
             this.groupBox_Answer.Controls.Add(this.textBox_Solution);
             this.groupBox_Answer.Controls.Add(this.label_Answer);
-            this.groupBox_Answer.Location = new System.Drawing.Point(24, 983);
+            this.groupBox_Answer.Location = new System.Drawing.Point(24, 1054);
             this.groupBox_Answer.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox_Answer.Name = "groupBox_Answer";
             this.groupBox_Answer.Padding = new System.Windows.Forms.Padding(6);
@@ -282,7 +286,7 @@
             this.groupBox_Population.Controls.Add(this.label_PopCounter);
             this.groupBox_Population.Controls.Add(this.label_PopulationCount);
             this.groupBox_Population.Controls.Add(this.listBox_Population);
-            this.groupBox_Population.Location = new System.Drawing.Point(22, 593);
+            this.groupBox_Population.Location = new System.Drawing.Point(22, 664);
             this.groupBox_Population.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox_Population.Name = "groupBox_Population";
             this.groupBox_Population.Padding = new System.Windows.Forms.Padding(6);
@@ -334,7 +338,7 @@
             this.groupBox_Limitations.Controls.Add(this.comboBox_MutationRate);
             this.groupBox_Limitations.Controls.Add(this.label_MutationRate);
             this.groupBox_Limitations.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox_Limitations.Location = new System.Drawing.Point(24, 285);
+            this.groupBox_Limitations.Location = new System.Drawing.Point(24, 356);
             this.groupBox_Limitations.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox_Limitations.Name = "groupBox_Limitations";
             this.groupBox_Limitations.Padding = new System.Windows.Forms.Padding(6);
@@ -442,11 +446,30 @@
             this.label_MutationRate.TabIndex = 0;
             this.label_MutationRate.Text = "Mutation Rate";
             // 
+            // label_EquationType
+            // 
+            this.label_EquationType.AutoSize = true;
+            this.label_EquationType.Location = new System.Drawing.Point(12, 251);
+            this.label_EquationType.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label_EquationType.Name = "label_EquationType";
+            this.label_EquationType.Size = new System.Drawing.Size(151, 25);
+            this.label_EquationType.TabIndex = 10;
+            this.label_EquationType.Text = "Equation Type";
+            // 
+            // comboBox_EquationTypes
+            // 
+            this.comboBox_EquationTypes.FormattingEnabled = true;
+            this.comboBox_EquationTypes.Location = new System.Drawing.Point(172, 248);
+            this.comboBox_EquationTypes.Name = "comboBox_EquationTypes";
+            this.comboBox_EquationTypes.Size = new System.Drawing.Size(608, 33);
+            this.comboBox_EquationTypes.TabIndex = 11;
+            this.comboBox_EquationTypes.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // Finder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 1136);
+            this.ClientSize = new System.Drawing.Size(862, 1218);
             this.Controls.Add(this.groupBox_Limitations);
             this.Controls.Add(this.groupBox_Population);
             this.Controls.Add(this.groupBox_Answer);
@@ -501,6 +524,8 @@
         private System.Windows.Forms.Button button_Stop;
         private System.Windows.Forms.Label label_AcceptableCost;
         private System.Windows.Forms.ComboBox comboBox_AcceptableCost;
+        private System.Windows.Forms.ComboBox comboBox_EquationTypes;
+        private System.Windows.Forms.Label label_EquationType;
 
     }
 }
