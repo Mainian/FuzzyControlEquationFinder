@@ -55,6 +55,10 @@
     <Compile Include="Finder.Designer.cs">
       <DependentUpon>Finder.cs</DependentUpon>
     </Compile>
+    <Compile Include="FuzzyControl\EF_Time.cs" />
+    <Compile Include="FuzzyControl\Fuzzy.cs" />
+    <Compile Include="FuzzyControl\Membership.cs" />
+    <Compile Include="FuzzyControl\TimeMembership.cs" />
     <Compile Include="Mutatable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,9 +1,9 @@
 ﻿using System;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EquationFinder.FuzzyControl;
 
 namespace EquationFinder
 {
@@ -22,6 +22,7 @@ namespace EquationFinder
         private EquationType type;
         private dynamic maxValue;        
         private dynamic minValue;
+        private EF_Time time = new EF_Time();
 
         #region Properties
         public List<EF_Equation> Equations
@@ -125,12 +126,19 @@ namespace EquationFinder
             this.maxValue = maxValue;
             this.minValue = minValue;
 
+            time.Hours = 1;
+            time.Minutes = 1;
+            time.Seconds = 1;
+            time.MilliSeconds = 1;
+
+            TimeMembership timeMemberShip = new TimeMembership(time);
+            dynamic val = timeMemberShip.Low_Membership(time);
+
             this.Equations = new List<EF_Equation>();
         }
 
         private void initializePopulationWithSeed(EF_Equation seed)
         {
-
         }
 
         private void initializePopulation()
