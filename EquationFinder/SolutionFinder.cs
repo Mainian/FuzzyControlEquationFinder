@@ -141,7 +141,7 @@ namespace EquationFinder
 
                 Equations.Add(equation);
 
-                Console.Out.WriteLine(equation.PrettyName);
+                //Console.Out.WriteLine(equation.PrettyName);
             }
 
             this.PopulationCount = 1;
@@ -195,8 +195,8 @@ namespace EquationFinder
                 } while (mutationRate-- > 0);
 
                 Equations.Sort(compareEquations);
-                for (int i = 0; i < Equations.Count; i++)
-                    Console.Out.WriteLine("Cost = " + cost(Equations[i]) + " Value = " + EquationCalculator.Instance.ComputeEquation(Equations[i]));
+                //for (int i = 0; i < Equations.Count; i++)
+                //    Console.Out.WriteLine("Cost = " + cost(Equations[i]) + " Value = " + EquationCalculator.Instance.ComputeEquation(Equations[i]));
                 if (foundAnswer(Equations[0]))
                 {
                     //answer found
@@ -204,8 +204,8 @@ namespace EquationFinder
                     return;
                 }
                 
-                Console.Out.WriteLine(" Best Computed Value = " + EquationCalculator.Instance.ComputeEquation(Equations[0]));
-                Console.Out.WriteLine("Best cost = " + cost(Equations[0]));
+                //Console.Out.WriteLine(" Best Computed Value = " + EquationCalculator.Instance.ComputeEquation(Equations[0]));
+                //Console.Out.WriteLine("Best cost = " + cost(Equations[0]));
             }
         }
 

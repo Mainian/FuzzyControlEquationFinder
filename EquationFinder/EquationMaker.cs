@@ -116,8 +116,6 @@ namespace EquationFinder
                 dynamic value = variable.Value;
 
                 dynamic coeff = variable.CoEfficient;
-                //coeff = 0.2;
-                //Console.Out.WriteLine(variable.Value);
 
                 dynamic power = variable.Power;
                 EF_Variable newVariable = new EF_Variable(symbol, value, coeff, power, varType);
@@ -180,7 +178,7 @@ namespace EquationFinder
         public void MutateEquation(ref EF_Equation equation, dynamic maxMutation, dynamic minMutation)
         {
             //Maybe limit mutations here
-            int mutations = RandomGenerator.Instance.Random.Next(3, equation.Operators.Count + equation.Variables.Count);
+            int mutations = RandomGenerator.Instance.Random.Next(1, equation.Operators.Count + equation.Variables.Count+2);
             equation.Mutate(maxMutation, minMutation, mutations);
         }
 

@@ -42,24 +42,26 @@ namespace EquationFinder
 
         public override string ToString()
         {
-            return (CoEfficient + "*" + Symbol + "^" + Power);
+            return ("("+CoEfficient + "*" + Symbol + "^(" + Power+"))");
         }
 
         public void Mutate(dynamic maxMutation, dynamic minMutation, int mutations = 1)
         {
             double coeff = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
             double pow = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
-            //double valu = RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
             while (mutations-- >= 0)
             {
                 if (coeff > pow) //change coefficient
-                    CoEfficient += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
+                        CoEfficient += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
                 else
                     Power += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
-                //else //change power
-                //    Value += RandomGenerator.Instance.Random.NextDouble() * (maxMutation - minMutation) + minMutation;
             }
 
+            if (VariableType.Equals(VariableType.Int))
+            {
+                CoEfficient = (int)CoEfficient;
+                Power = (int)Power;
+            }
         }
     }
 }

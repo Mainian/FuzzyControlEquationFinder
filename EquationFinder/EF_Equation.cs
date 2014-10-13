@@ -32,7 +32,7 @@ namespace EquationFinder
                 string output = "";
                 for (int i = 0; i < Variables.Count; i++)
                 {
-                    if (Operators.Count - 1 > i)
+                    if (Operators.Count - 1 >= i)
                         output += Variables[i].ToString() + Operators[i].ToString();
                     else
                         output += Variables[i].ToString();
@@ -68,7 +68,7 @@ namespace EquationFinder
             string output = "";
             for (int i = 0; i < Variables.Count; i++)
             {
-                if (Operators.Count - 1 > i)
+                if (Operators.Count - 1 >= i)
                     output += Variables[i].ComputedValue + Operators[i].ToString();
                 else
                     output += Variables[i].ComputedValue;

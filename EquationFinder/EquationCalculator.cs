@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace EquationFinder
 {
@@ -30,7 +31,9 @@ namespace EquationFinder
 
         public dynamic ComputeEquation(EF_Equation equation)
         {
-            //Console.Out.WriteLine("Equation Operators = " + equation.Operators.Count);
+            //DataTable computeTable = new DataTable();
+            //return  Convert.ToDouble(computeTable.Compute(equation.ToString(), null).ToString());
+
             if (equation.Variables.Count == 1)
                 return equation.Variables[0].ComputedValue;
 
