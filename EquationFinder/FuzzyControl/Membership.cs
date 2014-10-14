@@ -97,45 +97,6 @@ namespace EquationFinder.FuzzyControl
             return 0.0;
         }
 
-        //protected dynamic low_MemberShip<T>(T value)
-        //{
-        //    if (value < low) return 1.0;
-        //    if (value > high) return 0.0;
-
-        //    return pleatueProfile(value, low, low_plat, high_plat, high);
-        //}
-
-        //public virtual dynamic Low_Membership<T>(T value)
-        //{
-        //    return low_MemberShip(value);
-        //}
-
-        //protected dynamic medium_Membership<T>(T value)
-        //{
-        //    if (value < low) return 0.0;
-        //    if (value > high) return 0.0;
-
-        //    return pleatueProfile(value, low, low_plat, high_plat, high);
-        //}
-
-        //public virtual dynamic Medium_Membership<T>(T value)
-        //{
-        //    return medium_Membership(value);
-        //}
-
-        //protected dynamic high_Membership<T>(T value)
-        //{
-        //    if (value < low) return 0.0;
-        //    if (value > high) return 1.0;
-
-        //    return pleatueProfile(value, low, low_plat, high_plat, high);
-        //}
-
-        //public virtual dynamic High_Membership<T>(T value)
-        //{
-        //    return high_Membership(value);
-        //}
-
         protected dynamic low_MemberShip(dynamic value)
         {
             FuzzyValues values = FuzzyValuesMaker.LowFuzzyValues(targetValue);
