@@ -163,24 +163,27 @@ namespace EquationFinder
         private void performStepWithFuzzy()
         {
             var watch = Stopwatch.StartNew();
-            performStep();
+            bool foundAnswer = performStep();
             watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            EF_Time time = new EF_Time(elapsedMs);
-            changePopulationSizeBasedOnTime(time);
+            if (!foundAnswer)
+            {
+                var elapsedMs = watch.ElapsedMilliseconds;
+                EF_Time time = new EF_Time(elapsedMs);
+                changePopulationSizeBasedOnTime(time);
+            }
         }
 
-        private void performStep()
+        private bool performStep()
         {
             if(Equations.Count <= 0)
-                return;
+                return false;
 
             Equations.Sort(compareEquations);
             if (foundAnswer(Equations[0]))
             {
                 //answer found
                 OnAnswerFound(Equations[0], null);
-                return;
+                return true;
             }
             else
             {
@@ -203,7 +206,7 @@ namespace EquationFinder
                 {
                     //answer found
                     OnAnswerFound(Equations[0], null);
-                    return;
+                    return true;
                 }
                 do
                 {
@@ -224,11 +227,12 @@ namespace EquationFinder
                 {
                     //answer found
                     OnAnswerFound(Equations[0], null);
-                    return;
+                    return true;
                 }
-                
+
                 //Console.Out.WriteLine(" Best Computed Value = " + EquationCalculator.Instance.ComputeEquation(Equations[0]));
                 //Console.Out.WriteLine("Best cost = " + cost(Equations[0]));
+                return false;
             }
         }
 

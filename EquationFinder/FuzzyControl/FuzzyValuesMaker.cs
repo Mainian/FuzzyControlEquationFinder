@@ -20,7 +20,7 @@ namespace EquationFinder.FuzzyControl
 
         //const float high_Low = 1.05f;
         //const float high_Low_Plat = 2.00f;
-        const float high_High_Plat = 2.00f;
+        const float high_High_Plat = 1.38f;
         const float high_High = 2.00f;
 
         public static FuzzyValues LowFuzzyValues(dynamic value)
