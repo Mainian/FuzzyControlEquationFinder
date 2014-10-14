@@ -248,7 +248,6 @@ namespace EquationFinder
                 changed += (med * populationSize*0.05);
 
             changed = (int)changed;
-            Console.Out.WriteLine(-11 % 2);
             if (Math.Abs(changed % 2) == 1)
                 changed--;
 
