@@ -81,9 +81,13 @@ namespace EquationFinder
 
         private void setupGAProperties()
         {
-            for (int i = 24; i <= 768; i *= 2)
-                comboBox_PopulationSize.Items.Add(i);
-            comboBox_PopulationSize.SelectedIndex = 1;
+            comboBox_AlgorithmCompuuteTime.DataSource = new BindingSource(EF_TimeMaker.GenericTimeList(), null);
+            comboBox_AlgorithmCompuuteTime.DisplayMember = "Value";
+            comboBox_AlgorithmCompuuteTime.ValueMember = "Value";
+
+            //for (int i = 24; i <= 768; i *= 2)
+            //    comboBox_AlgorithmCompuuteTime.Items.Add(i);
+            //comboBox_AlgorithmCompuuteTime.SelectedIndex = 1;
 
             for (dynamic i = 1; i <= 10; i++)
                 comboBox_MutationRate.Items.Add(i);
@@ -128,7 +132,7 @@ namespace EquationFinder
             {
                 comboBox_AcceptableCost.Enabled = false;
                 comboBox_MaxValue.Enabled = false;
-                comboBox_PopulationSize.Enabled = false;
+                comboBox_AlgorithmCompuuteTime.Enabled = false;
                 comboBox_EquationTypes.Enabled = false;
                 comboBox_MinValue.Enabled = false;
                 comboBox_MutationRate.Enabled = false;
@@ -143,7 +147,7 @@ namespace EquationFinder
             {
                 comboBox_AcceptableCost.Enabled = true;
                 comboBox_MaxValue.Enabled = true;
-                comboBox_PopulationSize.Enabled = true;
+                comboBox_AlgorithmCompuuteTime.Enabled = true;
                 comboBox_MinValue.Enabled = true;
                 comboBox_MutationRate.Enabled = true;
                 comboBox_EquationTypes.Enabled = true;
@@ -167,6 +171,7 @@ namespace EquationFinder
 
             displayPopulationSettings();
             label_PopCounter.Text = "Answer found on " + solutionFinder.PopulationCount;
+            label_PopSizeCounter.Text = solutionFinder.PopulationSize.ToString();
             Console.Out.WriteLine("Value = " + EquationCalculator.Instance.ComputeEquation(equation));
 
             textBox_Solution.Text = equation.PrettyName;
@@ -174,11 +179,6 @@ namespace EquationFinder
         }
 
         #region Variables
-        private void comboBox_Variables_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void textBox_Variable_TextChanged(object sender, EventArgs e)
         {
             bool digit = false;
@@ -347,7 +347,7 @@ namespace EquationFinder
             {
                 solutionFinder = new SolutionFinder(inputs, double.Parse(textBox_EquationValue.Text.ToString()),
                     double.Parse(comboBox_AcceptableCost.SelectedItem.ToString()), double.Parse(comboBox_MutationRate.SelectedItem.ToString()),
-                    int.Parse(comboBox_PopulationSize.SelectedItem.ToString()), (EquationType)comboBox_EquationTypes.SelectedValue, 
+                    (EquationFinder.FuzzyControl.EF_Time)comboBox_AlgorithmCompuuteTime.SelectedItem, (EquationType)comboBox_EquationTypes.SelectedValue, 
                     double.Parse(comboBox_MaxValue.SelectedItem.ToString()), double.Parse(comboBox_MinValue.SelectedItem.ToString()));
                 newSolution = false;
 
@@ -366,6 +366,7 @@ namespace EquationFinder
         private void displayPopulationSettings()
         {
             label_PopCounter.Text = solutionFinder.PopulationCount.ToString();
+            label_PopSizeCounter.Text = solutionFinder.PopulationSize.ToString();
 
             listBox_Population.DataSource = null;
 
@@ -373,9 +374,14 @@ namespace EquationFinder
             listBox_Population.DisplayMember = "PrettyName";
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox_Variables_DropDownClosed(object sender, EventArgs e)
         {
+            comboBox_Variables.DisplayMember = "Key";
+        }
 
+        private void comboBox_Variables_DropDown(object sender, EventArgs e)
+        {
+            comboBox_Variables.DisplayMember = "Value";
         }
     }
 }

@@ -8,10 +8,16 @@ namespace EquationFinder.FuzzyControl
 {
     public abstract class Membership<T> where T : class
     {
-        protected dynamic low;
-        protected dynamic low_plat;
-        protected dynamic high_plat;
-        protected dynamic high;
+        protected dynamic targetValue;
+        protected dynamic TargetValue
+        {
+            get { return targetValue; }
+        }
+
+        protected Membership(dynamic targetValue)
+        {
+            this.targetValue = targetValue;
+        }
 
         protected static int normalize(dynamic inVal)
         {
@@ -62,11 +68,13 @@ namespace EquationFinder.FuzzyControl
             dynamic upslope;
             dynamic downslope;
 
+            value += (-low);
+
             if (low < 0.0)
             {
-                low_plat += low;
+                low_plat += -low;
                 high_plat += -low;
-                high_plat += -low;
+                high += -low;
                 low = 0;
             }
             else
@@ -128,13 +136,14 @@ namespace EquationFinder.FuzzyControl
         //    return high_Membership(value);
         //}
 
-
         protected dynamic low_MemberShip(dynamic value)
         {
-            if (value < low) return 1.0;
-            if (value > high) return 0.0;
+            FuzzyValues values = FuzzyValuesMaker.LowFuzzyValues(targetValue);
 
-            return pleatueProfile(value, low, low_plat, high_plat, high);
+            if (value < values.Low) return 1.0;
+            if (value > values.High) return 0.0;
+
+            return pleatueProfile(value, values.Low, values.Low_Plat, values.High_Plat, values.High);
         }
 
         public virtual dynamic Low_Membership(T value)
@@ -144,10 +153,12 @@ namespace EquationFinder.FuzzyControl
 
         protected dynamic medium_Membership(dynamic value)
         {
-            if (value < low) return 0.0;
-            if (value > high) return 0.0;
+            FuzzyValues values = FuzzyValuesMaker.MediumFuzzyValues(targetValue);
 
-            return pleatueProfile(value, low, low_plat, high_plat, high);
+            if (value < values.Low) return 0.0;
+            if (value > values.High) return 0.0;
+
+            return pleatueProfile(value, values.Low, values.Low_Plat, values.High_Plat, values.High);
         }
 
         public virtual dynamic Medium_Membership(T value)
@@ -157,10 +168,12 @@ namespace EquationFinder.FuzzyControl
 
         protected dynamic high_Membership(dynamic value)
         {
-            if (value < low) return 0.0;
-            if (value > high) return 1.0;
+            FuzzyValues values = FuzzyValuesMaker.HighFuzzyValues(targetValue);
 
-            return pleatueProfile(value, low, low_plat, high_plat, high);
+            if (value < values.Low) return 0.0;
+            if (value > values.High) return 1.0;
+
+            return pleatueProfile(value, values.Low, values.Low_Plat, values.High_Plat, values.High);
         }
 
         public virtual dynamic High_Membership(T value)

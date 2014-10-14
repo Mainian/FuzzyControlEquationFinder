@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EF_TimeMaker.cs" />
     <Compile Include="EquationCalculator.cs" />
     <Compile Include="EF_Equation.cs" />
     <Compile Include="EF_Operator.cs" />
@@ -57,6 +58,8 @@
     </Compile>
     <Compile Include="FuzzyControl\EF_Time.cs" />
     <Compile Include="FuzzyControl\Fuzzy.cs" />
+    <Compile Include="FuzzyControl\FuzzyValues.cs" />
+    <Compile Include="FuzzyControl\FuzzyValuesMaker.cs" />
     <Compile Include="FuzzyControl\Membership.cs" />
     <Compile Include="FuzzyControl\TimeMembership.cs" />
     <Compile Include="Mutatable.cs" />

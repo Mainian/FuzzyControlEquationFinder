@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace EquationFinder
         private EquationType type;
         private dynamic maxValue;        
         private dynamic minValue;
-        private EF_Time time = new EF_Time();
+        private EF_Time targetTime;
+        private TimeMembership timeMemberShip;
 
         #region Properties
         public List<EF_Equation> Equations
@@ -102,37 +104,40 @@ namespace EquationFinder
         }
         #endregion
 
-        public SolutionFinder(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, int populationSize, EquationType type, dynamic maxValue, dynamic minValue)
+        public SolutionFinder(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, EF_Time time, EquationType type, dynamic maxValue, dynamic minValue)
         {
-            fillOut(inputs, output, acceptableCost, mutationRate, populationSize, type, maxValue, minValue);
+            fillOut(inputs, output, acceptableCost, mutationRate, time, type, maxValue, minValue);
             initializePopulation();
         }
 
-        public SolutionFinder(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, int populationSize, EquationType type, dynamic maxValue, dynamic minValue, EF_Equation seed)
+        public SolutionFinder(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, EF_Time time, EquationType type, dynamic maxValue, dynamic minValue, EF_Equation seed)
         {
-            fillOut(inputs, output, acceptableCost, mutationRate, populationSize, type, maxValue, minValue);
+            fillOut(inputs, output, acceptableCost, mutationRate, time, type, maxValue, minValue);
             this.seed = seed;
             initializePopulationWithSeed(this.seed);
         }
 
-        private void fillOut(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, int populationSize, EquationType type, dynamic maxValue, dynamic minValue)
+        private void fillOut(Dictionary<char, dynamic> inputs, dynamic output, dynamic acceptableCost, dynamic mutationRate, EF_Time time, EquationType type, dynamic maxValue, dynamic minValue)
         {
             this.inputs = inputs;
             this.output = output;
             this.acceptableCost = acceptableCost;
             this.mutationRate = mutationRate;
-            this.populationSize = populationSize;
+            this.targetTime = time;
             this.type = type;
             this.maxValue = maxValue;
             this.minValue = minValue;
+            this.timeMemberShip = new TimeMembership(this.targetTime);
+            this.populationSize = 1024 * RandomGenerator.Instance.Random.Next(1, 51);
+            
 
-            time.Hours = 1;
-            time.Minutes = 1;
-            time.Seconds = 1;
-            time.MilliSeconds = 1;
+            //EF_Time testTime = new EF_Time();
+            //testTime.Hours = 4;
 
-            TimeMembership timeMemberShip = new TimeMembership(time);
-            dynamic val = timeMemberShip.Low_Membership(time);
+            //TimeMembership timeMemberShip = new TimeMembership(time);
+            //dynamic val = timeMemberShip.Low_Membership(testTime);
+            //dynamic medium = timeMemberShip.Medium_Membership(testTime);
+            //dynamic high = timeMemberShip.High_Membership(testTime);
 
             this.Equations = new List<EF_Equation>();
         }
@@ -153,6 +158,16 @@ namespace EquationFinder
             }
 
             this.PopulationCount = 1;
+        }
+
+        private void performStepWithFuzzy()
+        {
+            var watch = Stopwatch.StartNew();
+            performStep();
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            EF_Time time = new EF_Time(elapsedMs);
+            changePopulationSizeBasedOnTime(time);
         }
 
         private void performStep()
@@ -217,16 +232,49 @@ namespace EquationFinder
             }
         }
 
+        private void changePopulationSizeBasedOnTime(EF_Time time)
+        {
+            dynamic low = timeMemberShip.Low_Membership(time);
+            dynamic med = timeMemberShip.Medium_Membership(time);
+            dynamic high = timeMemberShip.High_Membership(time);
+
+            dynamic changed = (low * populationSize*0.10) - (high * populationSize*0.10);
+            if (med != 1.0)
+                changed += (med * populationSize*0.05);
+
+            changed = (int)changed;
+            Console.Out.WriteLine(-11 % 2);
+            if (Math.Abs(changed % 2) == 1)
+                changed--;
+
+            if (Math.Abs((changed / 2) % 2) == 1)
+                changed += 2;
+
+            populationSize += changed;
+
+            while (Equations.Count < populationSize)
+            {
+                int index1 = RandomGenerator.Instance.Random.Next(0, Equations.Count);
+                int index2 = RandomGenerator.Instance.Random.Next(0, Equations.Count);
+                Tuple<EF_Equation, EF_Equation> toAdd = EquationMaker.Instance.MakeChildren(Equations[index1], Equations[index2]);
+                Equations.Add(toAdd.Item1);
+                Equations.Add(toAdd.Item2);
+            }
+
+            while (Equations.Count > populationSize)
+                Equations.RemoveAt(Equations.Count - 1);
+        }
+
         public void PerformStep()
         {
-            performStep();
+            performStepWithFuzzy();
         }
 
         public void PerformSteps(int steps)
         {
             while (steps > 0)
             {
-                performStep();
+                performStepWithFuzzy();
                 steps--;
             }
         }
@@ -235,7 +283,7 @@ namespace EquationFinder
         {
             while (!(foundAnswer(Equations[0])))
             {
-                performStep();
+                performStepWithFuzzy();
             }
         }
 

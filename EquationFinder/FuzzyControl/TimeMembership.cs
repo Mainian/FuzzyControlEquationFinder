@@ -15,7 +15,7 @@ namespace EquationFinder.FuzzyControl
             get { return time; }
         }
 
-        public TimeMembership(EF_Time time)
+        public TimeMembership(EF_Time time) : base((double)time.TotalMilliSeconds)
         {
             this.time = time;
         }

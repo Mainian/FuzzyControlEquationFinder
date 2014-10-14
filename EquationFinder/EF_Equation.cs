@@ -104,9 +104,13 @@ namespace EquationFinder
         {
             int muts = mutations;
             int index;
+            int lowerBound = 0;
             do
             {
-                switch (RandomGenerator.Instance.Random.Next(0, 3))
+                if (this.Operators.Count <= 0)
+                    lowerBound++;
+
+                switch (RandomGenerator.Instance.Random.Next(lowerBound, 3))
                 {
                     case 0:
                         index = RandomGenerator.Instance.Random.Next(0, this.Operators.Count());
