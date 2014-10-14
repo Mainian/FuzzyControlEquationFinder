@@ -47,21 +47,27 @@ namespace EquationFinder
             {
                 switch (equation.Operators[i].Operator)
                 {
-                    case EF_Operand.Add: operatorList.Add(equation.Operators[i]); break;
-                    case EF_Operand.Subtract: operatorList.Add(equation.Operators[i]); break;
+                    case EF_Operand.Add: 
+                        operatorList.Add(equation.Operators[i]);
+                        x--;
+                        break;
+                    case EF_Operand.Subtract: 
+                        operatorList.Add(equation.Operators[i]); 
+                        x--; 
+                        break;
                     case EF_Operand.Multiply:
                         dynamic val_temp = 0;
                         val_temp = computeVariables(variableList[x], variableList[x+1], equation.Operators[i]);
                         variableList[x] = val_temp;
                         variableList.RemoveAt(x + 1);
-                        x--;
+                        x-=2;
                         break;
                     case EF_Operand.Divide:
                         dynamic val_temp2 = 0;
                         val_temp2 = computeVariables(variableList[x], variableList[x+1], equation.Operators[i]);
                         variableList[x] = val_temp2;
                         variableList.RemoveAt(x + 1);
-                        x--;
+                        x-=2;
                         break;
                     default: break;
                 }
@@ -76,14 +82,14 @@ namespace EquationFinder
                         val_temp = computeVariables(variableList[x], variableList[x+1], operatorList[i]);
                         variableList[x] = val_temp;
                         variableList.RemoveAt(x + 1);
-                        x--;
+                        x-=2;
                         break;
                     case EF_Operand.Subtract:
                         dynamic val_temp2 = 0;
                         val_temp2 = computeVariables(variableList[x], variableList[x+1], operatorList[i]);
                         variableList[x] = val_temp2;
                         variableList.RemoveAt(x + 1);
-                        x--;
+                        x-=2;
                         break;
                     default: break;
                 }

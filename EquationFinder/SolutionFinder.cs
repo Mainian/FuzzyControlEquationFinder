@@ -208,6 +208,7 @@ namespace EquationFinder
                     OnAnswerFound(Equations[0], null);
                     return true;
                 }
+                int mutationsToDo = (int)((mutationRate / 100) * (double)PopulationSize);
                 do
                 {
                     int index = RandomGenerator.Instance.Random.Next(1, Equations.Count);
@@ -218,7 +219,7 @@ namespace EquationFinder
                     EquationMaker.Instance.MutateEquation(ref mutateMe, maxMutationRate, minMutationRate);
                     Equations[index] = mutateMe;
 
-                } while (mutationRate-- > 0);
+                } while (mutationsToDo-- > 0);
 
                 Equations.Sort(compareEquations);
                 //for (int i = 0; i < Equations.Count; i++)
@@ -278,7 +279,8 @@ namespace EquationFinder
         {
             while (steps > 0)
             {
-                performStepWithFuzzy();
+                if(!foundAnswer(Equations[0]))
+                    performStepWithFuzzy();
                 steps--;
             }
         }
